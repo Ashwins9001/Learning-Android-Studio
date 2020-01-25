@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         t1.show();
     }
 
-    //runs on button click
+    //runs on button click, incrementing it each time
     public void showCount(View view) {
         mCount++;
         //if textview exists, convert integer mCount to a string and display it
