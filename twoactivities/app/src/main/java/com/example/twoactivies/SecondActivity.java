@@ -21,6 +21,17 @@ public class SecondActivity extends AppCompatActivity {
 
     //for things such as rotation: onPause->onStop->onDestroy->onStart->onResume
     //essentially destroy and remake activity
+    //must track state of activity else user data lost
+    //Activity state stored in bundle obj called instance state
+    //system passes default information to bundle obj when activity stopped, then bundle obj
+    //passed to a new activity instance to restore details, giving appearance of unchanged data
+    //use onSaveStateInstance() to keep data, called b/w onPause, onStop
+    //once app restarted instance state gets lost, to store user data b/w sessions, use database
+
+    //SecondActivity layout and state generated from intent, even if recreated intent still there
+    //thus data (extras) and config unchanged
+    //EditText elements also maintain information when changed
+    //TextView elements must be configured
     @Override
     public void onStart(){ //activity visible to user
         super.onStart();

@@ -21,17 +21,47 @@ public class MainActivity extends AppCompatActivity {
     //MainActivity.class returns Class object, getSimpleName() method for class name
     private static String LOG_TAG = MainActivity.class.getSimpleName();
 
+    //bundles are hashtables containing key data to create state for activity
+    //initially bundle for onCreate null, over time data added via onSaveInstance
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //R.id is identifier for obj
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.d(LOG_TAG, "------");
+        Log.d(LOG_TAG, "onCreate");
+
         //EditText object refers elem
         mMessageEditText = findViewById(R.id.editText_main);
         mReplyHeadTextView = findViewById(R.id.text_header_reply);
         mReplyTextView = findViewById(R.id.text_message_reply);
-        Log.d(LOG_TAG, "------");
-        Log.d(LOG_TAG, "onCreate");
+
+        //recreate state with saved info from bundle
+        if(savedInstanceState != null)
+        {
+            boolean isVisible = savedInstanceState.getBoolean("reply_visible");
+            if(isVisible)
+            {
+                mReplyHeadTextView.setVisibility(View.VISIBLE);
+                mReplyTextView.setText(savedInstanceState.getString("reply_text"));
+                mReplyTextView.setVisibility(View.VISIBLE);
+            }
+        }
+
+    }
+    //only care about visibility, text doesn't change
+    //save string information as previous intent destroyed
+    @Override
+    public void onSaveInstanceState(Bundle outState)
+    {
+        //create instance first
+        super.onSaveInstanceState(outState);
+        //check if header already visible, then add to bundle
+        if(mReplyHeadTextView.getVisibility() == View.VISIBLE)
+        {
+            outState.putBoolean("reply_visible", true);
+            outState.putString("reply_text", mReplyTextView.getText().toString());
+        }
     }
     //for all lifecycle methods, are required to override parent class and call its instance via super
     @Override
