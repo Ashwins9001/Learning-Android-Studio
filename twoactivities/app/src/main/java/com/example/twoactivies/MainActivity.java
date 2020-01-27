@@ -30,6 +30,40 @@ public class MainActivity extends AppCompatActivity {
         mMessageEditText = findViewById(R.id.editText_main);
         mReplyHeadTextView = findViewById(R.id.text_header_reply);
         mReplyTextView = findViewById(R.id.text_message_reply);
+        Log.d(LOG_TAG, "------");
+        Log.d(LOG_TAG, "onCreate");
+    }
+    //for all lifecycle methods, are required to override parent class and call its instance via super
+    @Override
+    public void onStart(){ //activity visible to user
+        super.onStart();
+        Log.d(LOG_TAG, "onStart");
+    }
+    //on startup: onCreate ->onStart->onResume
+    @Override
+    public void onPause(){ //activity being left, pause animations/music playback, etc.
+        super.onPause();
+        Log.d(LOG_TAG, "onPause");
+    }
+    @Override
+    public void onRestart(){
+        super.onRestart();
+        Log.d(LOG_TAG, "onRestart");
+    }
+    @Override
+    public void onResume(){ //allows new activity to foreground to resume operations
+        super.onResume();
+        Log.d(LOG_TAG, "onResume");
+    }
+    @Override
+    public void onStop(){ //activity no longer visible to user (either due to new one or before termination)
+        super.onStop();
+        Log.d(LOG_TAG, "onStop");
+    }
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        Log.d(LOG_TAG, "onDestroy");
     }
 
     //define onClick event via XML for button
