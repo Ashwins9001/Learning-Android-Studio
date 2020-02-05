@@ -14,6 +14,8 @@ public class MainActivity extends AppCompatActivity {
     //hold EditText obj for URI
     private EditText mWebsiteEditText;
     private EditText mLocationEditText;
+    private EditText mShareTextEditText;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,5 +55,15 @@ public class MainActivity extends AppCompatActivity {
         else {
             Log.d("ImplicitIntents", "Can't handle intent");
         }
+    }
+    public void shareText(View view) {
+        mShareTextEditText = findViewById(R.id.share_edittext);
+        String txt = mShareTextEditText.getText().toString();
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, txt);
+
+        Intent shareIntent = Intent.createChooser(sendIntent, null);
+        startActivity(shareIntent);
     }
 }
