@@ -1,6 +1,7 @@
 package com.example.implicitintents;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ShareCompat;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -60,10 +61,20 @@ public class MainActivity extends AppCompatActivity {
         mShareTextEditText = findViewById(R.id.share_edittext);
         String txt = mShareTextEditText.getText().toString();
         Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);
+        /*sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_TEXT, txt);
 
         Intent shareIntent = Intent.createChooser(sendIntent, null);
-        startActivity(shareIntent);
+        startActivity(shareIntent);*/
+        //Define MIME type for other apps to decode
+        //Sharing is sending content such as text, images, videos
+        //ShareCompat.IntentBuilder chains method calls in API
+        String mimeType = "text/plain";
+        ShareCompat.IntentBuilder
+                .from(this)
+                .setType(mimeType)
+                .setChooserTitle(R.string.set_chooser_title)
+                .setText(txt)
+                .startChooser();
     }
 }
