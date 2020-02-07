@@ -15,7 +15,8 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-
+    private String mOrderMessage;
+    public static final String EXTRA_MESSAGE = "com.example.droidcafe.extra.MESSAGE";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //explicit intent, specifically state OrderActivity will fulfill it
                 Intent intent = new Intent(MainActivity.this, OrderActivity.class);
+                //provide key-val for OrderActivity to decode in onCreate()
+                intent.putExtra(EXTRA_MESSAGE, mOrderMessage);
                 startActivity(intent);
             }
         });
@@ -68,18 +71,21 @@ public class MainActivity extends AppCompatActivity {
     //Must take View (UI elem ref) param, be public, output void
     public void showDonutOrder(View view)
     {
+        mOrderMessage = getString(R.string.donut_order_message);
         //extracted via string res
-        displayToast(getString(R.string.donut_order_message));
+        displayToast(mOrderMessage);
     }
     public void showIceCreamOrder(View view)
     {
+        mOrderMessage = getString(R.string.ice_cream_order_message);
         //extracted via string res
-        displayToast(getString(R.string.ice_cream_order_message));
+        displayToast(mOrderMessage);
     }
     public void showFroyoOrder(View view)
     {
+        mOrderMessage = getString(R.string.froyo_order_message);
         //extracted via string res
-        displayToast(getString(R.string.froyo_order_message));
+        displayToast(mOrderMessage);
     }
 }
 
