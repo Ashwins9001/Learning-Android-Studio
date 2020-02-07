@@ -11,6 +11,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,4 +53,31 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+    public void displayToast(String message)
+    {
+        //Context provides access to application specific resources on class, extension of Activity
+        //Pass application context when unassociated with an activity/not implementing lib
+        //Done to prevent memory leaks (ref to activity prevents garb collection upon destrucction)
+        //Applies to newnly created obj, or to access comp implicitly to check ehat's happening
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    //create click handlers to do something when onClick() gets called
+    //Must take View (UI elem ref) param, be public, output void
+    public void showDonutOrder(View view)
+    {
+        //extracted via string res
+        displayToast(getString(R.string.donut_order_message));
+    }
+    public void showIceCreamOrder(View view)
+    {
+        //extracted via string res
+        displayToast(getString(R.string.ice_cream_order_message));
+    }
+    public void showFroyoOrder(View view)
+    {
+        //extracted via string res
+        displayToast(getString(R.string.froyo_order_message));
+    }
 }
+

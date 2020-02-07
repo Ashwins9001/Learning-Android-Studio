@@ -5,4 +5,7 @@
     <string name="donuts">donuts are glazed and sprinkled with candy</string>
     <string name="ice_cream_sandwiches">icecream sandwiches have chocolate wafers and vanilla filling</string>
     <string name="froyo">froYo is a premium self-serve frozen yogurt</string>
+    <string name="donut_order_message">You ordered a donut</string>
+    <string name="ice_cream_order_message">You ordered an ice cream</string>
+    <string name="froyo_order_message">You ordered a froyo</string>
 </resources>

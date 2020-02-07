@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/donut_description"
+    android:id="@+id/appmain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -31,7 +31,8 @@
         android:contentDescription="@string/donuts"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textIntro"
-        app:srcCompat="@drawable/donut_circle" />
+        app:srcCompat="@drawable/donut_circle"
+        android:onClick="showDonutOrder"/>
 
     <ImageView
         android:id="@+id/icecream_circle"
@@ -43,7 +44,8 @@
         android:contentDescription="@string/ice_cream_sandwiches"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/donut"
-        app:srcCompat="@drawable/icecream_circle" />
+        app:srcCompat="@drawable/icecream_circle"
+        android:onClick="showIceCreamOrder"/>
 
     <ImageView
         android:id="@+id/froyo"
@@ -55,10 +57,11 @@
         android:contentDescription="@string/froyo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/icecream_circle"
-        app:srcCompat="@drawable/froyo_circle" />
+        app:srcCompat="@drawable/froyo_circle"
+        android:onClick="showFroyoOrder"/>
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/donut_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
