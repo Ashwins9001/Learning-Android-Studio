@@ -8,4 +8,12 @@
     <string name="donut_order_message">You ordered a donut</string>
     <string name="ice_cream_order_message">You ordered an ice cream</string>
     <string name="froyo_order_message">You ordered a froyo</string>
+    <string name="name_label_text">TextView</string>
+    <string name="enter_name_hint">Enter your name</string>
+    <string name="address_label_text">Address</string>
+    <string name="hint_label">Enter address</string>
+    <string name="phone_label_text">Phone</string>
+    <string name="enter_phone_hint">Enter phone number</string>
+    <string name="note_label_text">Note</string>
+    <string name="enter_note_hint">Enter note</string>
 </resources>
