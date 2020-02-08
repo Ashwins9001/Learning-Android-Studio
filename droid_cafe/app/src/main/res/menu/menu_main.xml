@@ -11,16 +11,19 @@
         android:id="@+id/action_order"
         android:orderInCategory="10"
         android:title="@string/action_order"
-        app:showAsAction="never" />
+        android:icon="@drawable/ic_shopping_cart"
+        app:showAsAction="always" />
     <item
         android:id="@+id/action_status"
         android:orderInCategory="20"
         android:title="@string/action_status"
-        app:showAsAction="never" />
+        android:icon="@drawable/ic_status"
+        app:showAsAction="always" />
     <item
         android:id="@+id/action_favorites"
         android:orderInCategory="30"
+        android:icon="@drawable/ic_favorite"
         android:title="@string/action_favorites"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom" />
 
 </menu>
