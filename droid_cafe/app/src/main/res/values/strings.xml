@@ -16,4 +16,8 @@
     <string name="enter_phone_hint">Enter phone number</string>
     <string name="note_label_text">Note</string>
     <string name="enter_note_hint">Enter note</string>
+    <string name="choose_delivery_method">Choose a delivery method</string>
+    <string name="same_day_messenger_service">same day messenger service</string>
+    <string name="next_day_ground_delivery">next day ground delivery</string>
+    <string name="pickup">pickup</string>
 </resources>
