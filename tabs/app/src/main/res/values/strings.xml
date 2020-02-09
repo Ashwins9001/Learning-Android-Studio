@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Empty Activity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tab_1">These are top stories!</string>
+    <string name="tab_2">Text news you can use</string>
+    <string name="tab_3">Cooking Tips</string>
+    <string name="tab_label1">Top Stories</string>
+    <string name="tab_label2">Tech News</string>
+    <string name="tab_label3">Cooking</string>
+</resources>
