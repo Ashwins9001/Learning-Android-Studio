@@ -14,6 +14,15 @@ import android.view.MenuItem;
 
 import java.util.LinkedList;
 
+//RecyclerView requires specific layout manager to display list items
+//Adapter to connect data to recyclerview
+//ViewHolder inside of adapter to determine how view will appear
+
+//1. add RecyclerView elem in XML to content main
+//2. Create XML layout file for list item
+//3. Create adapter w viewHolder, implement method takes data, puts it in viewHolder and
+//lets layoutManager know to show
+//4. in OnCreate(), make RecyclerView and init w adapter and std layout manager
 public class MainActivity extends AppCompatActivity {
     private final LinkedList<String> mWordList = new LinkedList<>();
 
