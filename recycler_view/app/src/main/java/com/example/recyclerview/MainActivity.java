@@ -7,6 +7,8 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.View;
 import android.view.Menu;
@@ -25,7 +27,8 @@ import java.util.LinkedList;
 //4. in OnCreate(), make RecyclerView and init w adapter and std layout manager
 public class MainActivity extends AppCompatActivity {
     private final LinkedList<String> mWordList = new LinkedList<>();
-
+    private RecyclerView mRecyclerView;
+    private WordListAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,14 @@ public class MainActivity extends AppCompatActivity {
         {
             mWordList.add("Word " + i);
         }
+        //Get handle to RecyclerView
+        mRecyclerView = findViewById(R.id.recyclerview);
+        //Create adapter and supply data for display
+        mAdapter = new WordListAdapter(this, mWordList);
+        //Connect adapter to recyclerView
+        mRecyclerView.setAdapter(mAdapter);
+        //Provide layout manager recyclerView can default to
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override
