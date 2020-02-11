@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity() {
     //var name: dateType
     private lateinit var binding: ActivityMainBinding
 
+    private val myName: MyName = MyName("Aerfaf")
     //declare functions w: fun
     //? performs a safe call -> method/property accessed if callee not null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +37,7 @@ class MainActivity : AppCompatActivity() {
         binding.doneButton.setOnClickListener{addNickname(it)}
         //another lambda func but ref TextView, made to reset for more input
         findViewById<TextView>(R.id.nickname_text).setOnClickListener{updateNickname(it)}
+        binding.myName = myName
     }
     //pass in view for btn
     private fun addNickname(view: View)

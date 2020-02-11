@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name ="myName"
+            type="com.example.aboutme.MyName"/>
+    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".MainActivity">
+        tools:ignore="ExtraText">
 
 
         <TextView
@@ -15,8 +21,11 @@
             style="@style/NameStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/name_me"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            <!-- myName var ref, points to MyName data class, can fetch name var from it -->
+            <!-- similar to OOP class ref -->
+            android:text="@={myName.name}"
+             />
 
         <EditText
             android:id="@+id/nickname_edit"
