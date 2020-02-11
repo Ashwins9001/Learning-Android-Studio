@@ -10,6 +10,7 @@ import com.google.ar.core.Anchor;
 import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
+import com.google.ar.sceneform.ux.TransformableNode;
 
 public class MainActivity extends AppCompatActivity {
     private ArFragment arFragment;
@@ -49,5 +50,15 @@ public class MainActivity extends AppCompatActivity {
     private void addModelToScene(Anchor anchor, ModelRenderable modelRenderable) {
         //AnchorNode positions based on ARCore anchor, obj will be placed there
         AnchorNode anchorNode = new AnchorNode(anchor);
+        //pos cannot be changed on anchorNode after set
+        //transformable node can be scaled, moved using gestures via transform system
+        //ArFragment automatically calls onTouch(HitTestResult, MotionEvent) to detect gestures
+        //Transformation system used to detect gestures, encased w/ in ArFragment
+        TransformableNode transformNode = new TransformableNode(arFragment.getTransformationSystem());
+        transformNode.setParent(anchorNode);
+        transformNode.setRenderable(modelRenderable);
+        //user taps fixed plane for anchor, model superimposed as child of it, can be transformed
+        arFragment.getArSceneView().getScene().addChild(anchorNode);
+        transformNode.select();
     }
 }
