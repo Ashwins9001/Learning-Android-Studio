@@ -25,7 +25,7 @@ import androidx.room.PrimaryKey
 //If you annotate views, cannot ref in onCreate() as they won't exist till start-up
 //Primary key in SQL an added col that uniquely identifies each row
 //Each value of nightId is unique
-//Autogenerate lets Room define IDs itself 
+//Autogenerate lets Room define IDs itself
 
 @Entity(tableName = "daily_sleep_quality_table")
 data class SleepNight (
