@@ -21,7 +21,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-class appendStr{String x;appendStr(String s){x = s;}}
+class appendStr {String x; appendStr(String s) {x = s;}}
 
 public class MainActivity extends AppCompatActivity {
     private TextView textViewResult;
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         call1.enqueue(new Callback<JSONResponse>() {
             @Override
             public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
-                if(!response.isSuccessful()) {
+                if (!response.isSuccessful()) {
                     textViewResult.setText("Code: " + response.code());
                     return;
                 }
@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
                 data = new ArrayList<>(Arrays.asList(jsonData.getBooks()));
                 appendStations(builder, data);
             }
+
             @Override
             public void onFailure(Call<JSONResponse> call, Throwable t) {
                 textViewResult.setText(t.getMessage());
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         call2.enqueue(new Callback<JSONResponse>() {
             @Override
             public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
-                if(!response.isSuccessful()) {
+                if (!response.isSuccessful()) {
                     textViewResult.setText("Code: " + response.code());
                     return;
                 }
@@ -75,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 data = new ArrayList<>(Arrays.asList(jsonData.getBooks()));
                 appendStations(builder, data);
             }
+
             @Override
             public void onFailure(Call<JSONResponse> call, Throwable t) {
                 textViewResult.setText(t.getMessage());
@@ -83,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         call3.enqueue(new Callback<JSONResponse>() {
             @Override
             public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
-                if(!response.isSuccessful()) {
+                if (!response.isSuccessful()) {
                     textViewResult.setText("Code: " + response.code());
                     return;
                 }
@@ -92,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
                 appendStations(builder, data);
                 textViewResult.setText(stations.x);
             }
+
             @Override
             public void onFailure(Call<JSONResponse> call, Throwable t) {
                 textViewResult.setText(t.getMessage());
@@ -99,10 +102,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void appendStations(StringBuilder b, ArrayList<Books> addData)
-    {
-        for(int i = 0; i < addData.size(); i++)
-        {
+    public void appendStations(StringBuilder b, ArrayList<Books> addData) {
+        for (int i = 0; i < addData.size(); i++) {
             b.append(addData.get(i).getName() + "\n");
         }
         stations.x += b.toString();
