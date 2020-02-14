@@ -40,9 +40,12 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         Api api = retrofit.create(Api.class);
 
-        Call<JSONResponse> call = api.getJSON();
+        Call<JSONResponse> call1 = api.getFinch();
+        Call<JSONResponse> call2 = api.getUnion();
+        Call<JSONResponse> call3 = api.getSpadina();
+        StringBuilder builder = new StringBuilder();
 
-        call.enqueue(new Callback<JSONResponse>() {
+        call1.enqueue(new Callback<JSONResponse>() {
             @Override
             public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
                 if(!response.isSuccessful()) {
@@ -52,7 +55,64 @@ public class MainActivity extends AppCompatActivity {
                 JSONResponse jsonData = response.body();
                 data = new ArrayList<>(Arrays.asList(jsonData.getBooks()));
 
-                StringBuilder builder = new StringBuilder();
+                for(int i = 0; i < data.size(); i++)
+                {
+                    builder.append(data.get(i).getName() + "\n" );
+                    //builder.append(data.get(i).getAverageRating() + "\n" );
+                }
+                Log.w("Output", builder.toString());
+
+
+                // textViewResult.setText(builder.toString());
+                //textViewResult.setText(data.get(0).getName());
+                //Log.w("Output", data.get(0).getName());
+            }
+
+            @Override
+            public void onFailure(Call<JSONResponse> call, Throwable t) {
+                textViewResult.setText(t.getMessage());
+            }
+        });
+
+        call2.enqueue(new Callback<JSONResponse>() {
+            @Override
+            public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
+                if(!response.isSuccessful()) {
+                    textViewResult.setText("Code: " + response.code());
+                    return;
+                }
+                JSONResponse jsonData = response.body();
+                data = new ArrayList<>(Arrays.asList(jsonData.getBooks()));
+
+                for(int i = 0; i < data.size(); i++)
+                {
+                    builder.append(data.get(i).getName() + "\n" );
+                    //builder.append(data.get(i).getAverageRating() + "\n" );
+                }
+                Log.w("Output", builder.toString());
+
+
+                // textViewResult.setText(builder.toString());
+                //textViewResult.setText(data.get(0).getName());
+                //Log.w("Output", data.get(0).getName());
+            }
+
+            @Override
+            public void onFailure(Call<JSONResponse> call, Throwable t) {
+                textViewResult.setText(t.getMessage());
+            }
+        });
+
+        call3.enqueue(new Callback<JSONResponse>() {
+            @Override
+            public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
+                if(!response.isSuccessful()) {
+                    textViewResult.setText("Code: " + response.code());
+                    return;
+                }
+                JSONResponse jsonData = response.body();
+                data = new ArrayList<>(Arrays.asList(jsonData.getBooks()));
+
                 for(int i = 0; i < data.size(); i++)
                 {
                     builder.append(data.get(i).getName() + "\n" );
@@ -72,5 +132,7 @@ public class MainActivity extends AppCompatActivity {
                 textViewResult.setText(t.getMessage());
             }
         });
+
+
     }
 }
