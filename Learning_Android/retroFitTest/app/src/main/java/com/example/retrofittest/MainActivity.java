@@ -21,9 +21,13 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+class appendStr{String x;appendStr(String s){x = s;}}
+
 public class MainActivity extends AppCompatActivity {
     private TextView textViewResult;
     private ArrayList<Books> data;
+    StringBuilder builder = new StringBuilder();
+    appendStr stations = new appendStr("");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
         Call<JSONResponse> call1 = api.getFinch();
         Call<JSONResponse> call2 = api.getUnion();
         Call<JSONResponse> call3 = api.getSpadina();
-        StringBuilder builder = new StringBuilder();
 
         call1.enqueue(new Callback<JSONResponse>() {
             @Override
@@ -54,26 +57,13 @@ public class MainActivity extends AppCompatActivity {
                 }
                 JSONResponse jsonData = response.body();
                 data = new ArrayList<>(Arrays.asList(jsonData.getBooks()));
-
-                for(int i = 0; i < data.size(); i++)
-                {
-                    builder.append(data.get(i).getName() + "\n" );
-                    //builder.append(data.get(i).getAverageRating() + "\n" );
-                }
-                Log.w("Output", builder.toString());
-
-
-                // textViewResult.setText(builder.toString());
-                //textViewResult.setText(data.get(0).getName());
-                //Log.w("Output", data.get(0).getName());
+                appendStations(builder, data);
             }
-
             @Override
             public void onFailure(Call<JSONResponse> call, Throwable t) {
                 textViewResult.setText(t.getMessage());
             }
         });
-
         call2.enqueue(new Callback<JSONResponse>() {
             @Override
             public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
@@ -83,26 +73,13 @@ public class MainActivity extends AppCompatActivity {
                 }
                 JSONResponse jsonData = response.body();
                 data = new ArrayList<>(Arrays.asList(jsonData.getBooks()));
-
-                for(int i = 0; i < data.size(); i++)
-                {
-                    builder.append(data.get(i).getName() + "\n" );
-                    //builder.append(data.get(i).getAverageRating() + "\n" );
-                }
-                Log.w("Output", builder.toString());
-
-
-                // textViewResult.setText(builder.toString());
-                //textViewResult.setText(data.get(0).getName());
-                //Log.w("Output", data.get(0).getName());
+                appendStations(builder, data);
             }
-
             @Override
             public void onFailure(Call<JSONResponse> call, Throwable t) {
                 textViewResult.setText(t.getMessage());
             }
         });
-
         call3.enqueue(new Callback<JSONResponse>() {
             @Override
             public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
@@ -112,27 +89,22 @@ public class MainActivity extends AppCompatActivity {
                 }
                 JSONResponse jsonData = response.body();
                 data = new ArrayList<>(Arrays.asList(jsonData.getBooks()));
-
-                for(int i = 0; i < data.size(); i++)
-                {
-                    builder.append(data.get(i).getName() + "\n" );
-                    //builder.append(data.get(i).getAverageRating() + "\n" );
-                }
-                Log.w("Output", builder.toString());
-                textViewResult.setText(builder.toString());
-
-
-                // textViewResult.setText(builder.toString());
-                //textViewResult.setText(data.get(0).getName());
-                //Log.w("Output", data.get(0).getName());
+                appendStations(builder, data);
+                textViewResult.setText(stations.x);
             }
-
             @Override
             public void onFailure(Call<JSONResponse> call, Throwable t) {
                 textViewResult.setText(t.getMessage());
             }
         });
+    }
 
-
+    public void appendStations(StringBuilder b, ArrayList<Books> addData)
+    {
+        for(int i = 0; i < addData.size(); i++)
+        {
+            b.append(addData.get(i).getName() + "\n");
+        }
+        stations.x += b.toString();
     }
 }
