@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -27,10 +30,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         textViewResult = findViewById(R.id.text_view_result);
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://www.googleapis.com/books/")
-                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl("https://myttc.ca/")
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         Api api = retrofit.create(Api.class);
 
@@ -46,16 +52,19 @@ public class MainActivity extends AppCompatActivity {
                 JSONResponse jsonData = response.body();
                 data = new ArrayList<>(Arrays.asList(jsonData.getBooks()));
 
-                /*StringBuilder builder = new StringBuilder();
+                StringBuilder builder = new StringBuilder();
                 for(int i = 0; i < data.size(); i++)
                 {
-                    builder.append(data.get(i).getPublisher() + "\n" );
+                    builder.append(data.get(i).getName() + "\n" );
                     //builder.append(data.get(i).getAverageRating() + "\n" );
                 }
-                Log.w("Output", builder.toString());*/
+                Log.w("Output", builder.toString());
+                textViewResult.setText(builder.toString());
 
-               // textViewResult.setText(builder.toString());
-                textViewResult.setText(data.get(1).getPublisher());
+
+                // textViewResult.setText(builder.toString());
+                //textViewResult.setText(data.get(0).getName());
+                //Log.w("Output", data.get(0).getName());
             }
 
             @Override
