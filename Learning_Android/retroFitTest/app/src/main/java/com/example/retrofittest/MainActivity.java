@@ -6,6 +6,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -16,6 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
     private TextView textViewResult;
+    private ArrayList<Books> data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,33 +29,37 @@ public class MainActivity extends AppCompatActivity {
         textViewResult = findViewById(R.id.text_view_result);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://jsonplaceholder.typicode.com/")
+                .baseUrl("https://www.googleapis.com/books/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         Api api = retrofit.create(Api.class);
 
-        Call<List<Post>> call = api.getPosts();
+        Call<JSONResponse> call = api.getJSON();
 
-        //Cannot run calls to server on main thread, will freeze exec
-        //Run thread in background via RetroFit method
-        call.enqueue(new Callback<List<Post>>() {
+        call.enqueue(new Callback<JSONResponse>() {
             @Override
-            public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
+            public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
                 if(!response.isSuccessful()) {
                     textViewResult.setText("Code: " + response.code());
                     return;
                 }
-                List<Post> posts = response.body();
+                JSONResponse jsonData = response.body();
+                data = new ArrayList<>(Arrays.asList(jsonData.getBooks()));
 
-                for(Post post : posts) {
-                    String content = "";
-                    content += "Description: " + post.getDescription() + "\n";
-                    textViewResult.append(content);
+                /*StringBuilder builder = new StringBuilder();
+                for(int i = 0; i < data.size(); i++)
+                {
+                    builder.append(data.get(i).getPublisher() + "\n" );
+                    //builder.append(data.get(i).getAverageRating() + "\n" );
                 }
+                Log.w("Output", builder.toString());*/
+
+               // textViewResult.setText(builder.toString());
+                textViewResult.setText(data.get(1).getPublisher());
             }
 
             @Override
-            public void onFailure(Call<List<Post>> call, Throwable t) {
+            public void onFailure(Call<JSONResponse> call, Throwable t) {
                 textViewResult.setText(t.getMessage());
             }
         });

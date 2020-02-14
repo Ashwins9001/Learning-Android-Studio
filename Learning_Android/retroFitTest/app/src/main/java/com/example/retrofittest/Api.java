@@ -9,6 +9,6 @@ import retrofit2.http.GET;
 //Define relative URL in interface
 public interface Api {
 
-    @GET("posts")
-    Call<List<Post>> getPosts();
+    @GET("v1/volumes?q=flowers+inauthor:keyes&key=AIzaSyDuyXbWHxG3q4pKAjR_O9QRRusPUc9PXRE")
+    Call<JSONResponse> getJSON();
 }
