@@ -46,8 +46,6 @@ public class MainActivity extends AppCompatActivity {
         Api api = retrofit.create(Api.class);
 
         Call<JSONResponse> call1 = api.getFinch();
-        Call<JSONResponse> call2 = api.getUnion();
-        Call<JSONResponse> call3 = api.getSpadina();
 
         call1.enqueue(new Callback<JSONResponse>() {
             @Override
@@ -58,52 +56,17 @@ public class MainActivity extends AppCompatActivity {
                 }
                 JSONResponse jsonData = response.body();
                 data = new ArrayList<>(Arrays.asList(jsonData.getBooks()));
-                appendStations(builder, data);
+               // appendStations(builder, data);
                 for(int i = 0; i < data.size(); i++)
                 {
-
+                    builder.append(data.get(i).getName() + "\n");
                     Books[] temp = jsonData.getBooks();
                     routeData = new ArrayList<>(Arrays.asList(temp[i].getRoutes()));
 
                     appendRoutes(builder, routeData);
                 }
-            }
-
-            @Override
-            public void onFailure(Call<JSONResponse> call, Throwable t) {
-                textViewResult.setText(t.getMessage());
-            }
-        });
-        call2.enqueue(new Callback<JSONResponse>() {
-            @Override
-            public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
-                if (!response.isSuccessful()) {
-                    textViewResult.setText("Code: " + response.code());
-                    return;
-                }
-                JSONResponse jsonData = response.body();
-                data = new ArrayList<>(Arrays.asList(jsonData.getBooks()));
-                appendStations(builder, data);
-            }
-
-            @Override
-            public void onFailure(Call<JSONResponse> call, Throwable t) {
-                textViewResult.setText(t.getMessage());
-            }
-        });
-        call3.enqueue(new Callback<JSONResponse>() {
-            @Override
-            public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
-                if (!response.isSuccessful()) {
-                    textViewResult.setText("Code: " + response.code());
-                    return;
-                }
-                JSONResponse jsonData = response.body();
-                data = new ArrayList<>(Arrays.asList(jsonData.getBooks()));
-                appendStations(builder, data);
                 textViewResult.setText(stations.x);
             }
-
             @Override
             public void onFailure(Call<JSONResponse> call, Throwable t) {
                 textViewResult.setText(t.getMessage());
@@ -121,8 +84,9 @@ public class MainActivity extends AppCompatActivity {
     public void appendRoutes(StringBuilder b, ArrayList<Routes> addRoute)
     {
         for (int i = 0; i < addRoute.size(); i++) {
-            b.append(addRoute.get(i).getRoutename() + "\n");
+            b.append("Route number " + i + " : " + addRoute.get(i).getRoutename() + "\n");
         }
+        b.append("\n\n\n");
         stations.x += b.toString();
     }
 }
