@@ -26,6 +26,7 @@ class appendStr {String x; appendStr(String s) {x = s;}}
 public class MainActivity extends AppCompatActivity {
     private TextView textViewResult;
     private ArrayList<Books> data;
+    private ArrayList<Routes> routeData;
     StringBuilder builder = new StringBuilder();
     appendStr stations = new appendStr("");
 
@@ -58,6 +59,14 @@ public class MainActivity extends AppCompatActivity {
                 JSONResponse jsonData = response.body();
                 data = new ArrayList<>(Arrays.asList(jsonData.getBooks()));
                 appendStations(builder, data);
+                for(int i = 0; i < data.size(); i++)
+                {
+
+                    Books[] temp = jsonData.getBooks();
+                    routeData = new ArrayList<>(Arrays.asList(temp[i].getRoutes()));
+
+                    appendRoutes(builder, routeData);
+                }
             }
 
             @Override
@@ -103,8 +112,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void appendStations(StringBuilder b, ArrayList<Books> addData) {
+
         for (int i = 0; i < addData.size(); i++) {
             b.append(addData.get(i).getName() + "\n");
+        }
+        stations.x += b.toString();
+    }
+    public void appendRoutes(StringBuilder b, ArrayList<Routes> addRoute)
+    {
+        for (int i = 0; i < addRoute.size(); i++) {
+            b.append(addRoute.get(i).getRoutename() + "\n");
         }
         stations.x += b.toString();
     }
