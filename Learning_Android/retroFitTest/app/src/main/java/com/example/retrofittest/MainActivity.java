@@ -23,6 +23,22 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 class appendStr {String x; appendStr(String s) {x = s;}}
 
+
+
+
+//Used to create (string,string) pairs for recyclerView
+/*
+class StationRoutes{
+    String station;
+    String route;
+
+    public StationRoutes(String station, String route)
+    {
+        this.station = station;
+        this.route = route;
+    }
+}*/
+
 public class MainActivity extends AppCompatActivity {
     private TextView textViewResult;
     private ArrayList<Books> data;
@@ -57,13 +73,16 @@ public class MainActivity extends AppCompatActivity {
                 JSONResponse jsonData = response.body();
                 data = new ArrayList<>(Arrays.asList(jsonData.getBooks()));
                 Books[] temp = jsonData.getBooks();
-
+               // ArrayList<StationRoutes> pairs = new ArrayList<>();
                 for(int i = 0; i < data.size(); i++)
                 {
                     builder.append(data.get(i).getName() + "\n");
                     routeData = new ArrayList<>(Arrays.asList(temp[i].getRoutes()));
 
                     appendRoutes(builder, routeData);
+                    /*String addRoutetoPair = routesToString(routeData);
+                    StationRoutes newPair = new StationRoutes(data.get(i).getName(), routesToString(routeData));
+                    pairs.add(newPair);*/
                 }
                 Log.w("Output", builder.toString());
                 textViewResult.setText(builder.toString());
@@ -83,4 +102,14 @@ public class MainActivity extends AppCompatActivity {
         b.append("\n\n\n");
         stations.x += b.toString();
     }
+    /*
+    public String routesToString(ArrayList<Routes> routeStr)
+    {
+        StringBuilder allRoutes = new StringBuilder();
+        for(int i = 0; i < routeStr.size(); i++)
+        {
+            allRoutes.append(routeStr.get(i).getRoutename() + ", ");
+        }
+        return allRoutes.toString();
+    }*/
 }
