@@ -56,16 +56,17 @@ public class MainActivity extends AppCompatActivity {
                 }
                 JSONResponse jsonData = response.body();
                 data = new ArrayList<>(Arrays.asList(jsonData.getBooks()));
-               // appendStations(builder, data);
+                Books[] temp = jsonData.getBooks();
+
                 for(int i = 0; i < data.size(); i++)
                 {
                     builder.append(data.get(i).getName() + "\n");
-                    Books[] temp = jsonData.getBooks();
                     routeData = new ArrayList<>(Arrays.asList(temp[i].getRoutes()));
 
                     appendRoutes(builder, routeData);
                 }
-                textViewResult.setText(stations.x);
+                Log.w("Output", builder.toString());
+                textViewResult.setText(builder.toString());
             }
             @Override
             public void onFailure(Call<JSONResponse> call, Throwable t) {
@@ -74,13 +75,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void appendStations(StringBuilder b, ArrayList<Books> addData) {
-
-        for (int i = 0; i < addData.size(); i++) {
-            b.append(addData.get(i).getName() + "\n");
-        }
-        stations.x += b.toString();
-    }
     public void appendRoutes(StringBuilder b, ArrayList<Routes> addRoute)
     {
         for (int i = 0; i < addRoute.size(); i++) {
