@@ -4,6 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.GridView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -15,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import okhttp3.Route;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -46,11 +51,42 @@ public class MainActivity extends AppCompatActivity {
     StringBuilder builder = new StringBuilder();
     appendStr stations = new appendStr("");
 
+    ArrayList<String> allStationBuses = new ArrayList<>();
+
+    List<RouteList> rAllItems = new ArrayList<>();
+
+
+    static class RouteList{
+        String allRoutes;
+       // ArrayList<String> allBuses;
+        String allBuses;
+        public RouteList(String allRoutes, String allBuses)
+        {
+            this.allBuses = allBuses;
+            this.allRoutes = allRoutes;
+        }
+    }
+    int count = 0;
+
+    static class ViewHolder{
+        TextView routeName;
+        TextView routeDescription;
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        textViewResult = findViewById(R.id.text_view_result);
+
+        GridView routeGrid = new GridView(this);
+        setContentView(routeGrid);
+
+        routeGrid.setNumColumns(2);
+
+        routeGrid.setColumnWidth(60);
+        routeGrid.setVerticalSpacing(20);
+        routeGrid.setHorizontalSpacing(20);
+
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();
@@ -73,19 +109,15 @@ public class MainActivity extends AppCompatActivity {
                 JSONResponse jsonData = response.body();
                 data = new ArrayList<>(Arrays.asList(jsonData.getBooks()));
                 Books[] temp = jsonData.getBooks();
-               // ArrayList<StationRoutes> pairs = new ArrayList<>();
                 for(int i = 0; i < data.size(); i++)
                 {
                     builder.append(data.get(i).getName() + "\n");
                     routeData = new ArrayList<>(Arrays.asList(temp[i].getRoutes()));
-
-                    appendRoutes(builder, routeData);
-                    /*String addRoutetoPair = routesToString(routeData);
-                    StationRoutes newPair = new StationRoutes(data.get(i).getName(), routesToString(routeData));
-                    pairs.add(newPair);*/
+                    appendRoutes(builder, routeData, data.get(i).getName());
                 }
                 Log.w("Output", builder.toString());
-                textViewResult.setText(builder.toString());
+                //textViewResult.setText(builder.toString());
+                callAdapter();
             }
             @Override
             public void onFailure(Call<JSONResponse> call, Throwable t) {
@@ -94,22 +126,49 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void appendRoutes(StringBuilder b, ArrayList<Routes> addRoute)
+    public void appendRoutes(StringBuilder b, ArrayList<Routes> addRoute, String currentRoute)
     {
+        StringBuilder routesForStation = new StringBuilder();
         for (int i = 0; i < addRoute.size(); i++) {
             b.append("Route number " + i + " : " + addRoute.get(i).getRoutename() + "\n");
+            routesForStation.append("Route number " + i + " : " + addRoute.get(i).getRoutename() + "\n");
+
+            allStationBuses.add(addRoute.get(i).getRoutename());
         }
+
+        rAllItems.add(new RouteList(currentRoute, routesForStation.toString()));
         b.append("\n\n\n");
         stations.x += b.toString();
     }
-    /*
-    public String routesToString(ArrayList<Routes> routeStr)
+    public void callAdapter()
     {
-        StringBuilder allRoutes = new StringBuilder();
-        for(int i = 0; i < routeStr.size(); i++)
-        {
-            allRoutes.append(routeStr.get(i).getRoutename() + ", ");
-        }
-        return allRoutes.toString();
-    }*/
+        ArrayAdapter<RouteList> routeAdapter = new ArrayAdapter<RouteList>(this, 0, rAllItems) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+
+                RouteList currentRoutes = rAllItems.get(position);
+
+                // Inflate only once
+                if(convertView == null) {
+                    convertView = getLayoutInflater()
+                            .inflate(R.layout.custom_item, null, false);
+                    ViewHolder viewHolder = new ViewHolder();
+                    viewHolder.routeName =
+                            (TextView)convertView.findViewById(R.id.route_name);
+                    viewHolder.routeDescription =
+                            (TextView)convertView.findViewById(R.id.route_description);
+
+                    // Store results of findViewById
+                    convertView.setTag(viewHolder);
+                }
+
+                TextView routesName = ((ViewHolder)convertView.getTag()).routeName;
+                TextView routesDesc = ((ViewHolder)convertView.getTag()).routeDescription;
+                routesName.setText(currentRoutes.allRoutes);
+                routesDesc.setText(currentRoutes.allBuses);
+
+                return convertView;
+            }
+        };
+    }
 }
