@@ -1,7 +1,5 @@
 package com.example.retrofittest;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -37,18 +37,18 @@ public class MainActivity extends AppCompatActivity {
 
 
     //Combine data entries for station and bus routes
-    static class RouteList{
+    static class RouteList {
         String allRoutes;
         String allBuses;
-        public RouteList(String allRoutes, String allBuses)
-        {
+
+        public RouteList(String allRoutes, String allBuses) {
             this.allBuses = allBuses;
             this.allRoutes = allRoutes;
         }
     }
 
     //Store views so findViewById() isn't repetitively called
-    static class ViewHolder{
+    static class ViewHolder {
         TextView routeName;
         TextView routeDescription;
     }
@@ -87,7 +87,9 @@ public class MainActivity extends AppCompatActivity {
         call1.enqueue(new Callback<JSONResponse>() {
             @Override
             public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
-                if (!response.isSuccessful()) {return;}
+                if (!response.isSuccessful()) {
+                    return;
+                }
                 JSONResponse jsonData = response.body();
 
                 //Store all stations as an array
@@ -95,31 +97,27 @@ public class MainActivity extends AppCompatActivity {
                 Stations[] temp = jsonData.getStations();
 
                 //Each station contains an array of Routes objects, require a nested for loop
-                for(int i = 0; i < data.size(); i++)
-                {
+                for (int i = 0; i < data.size(); i++) {
                     builder.append(data.get(i).getName() + "\n");
                     routeData = new ArrayList<>(Arrays.asList(temp[i].getRoutes()));
                     appendRoutes(builder, routeData, data.get(i).getName());
                 }
 
                 //Define ArrayAdapter to convert response objects to views
-                ArrayAdapter<RouteList> routeAdapter = new ArrayAdapter<RouteList>(MainActivity.this, 0, rAllItems)
-                {
+                ArrayAdapter<RouteList> routeAdapter = new ArrayAdapter<RouteList>(MainActivity.this, 0, rAllItems) {
                     //Redefeine getView to be account for RouteList objects
                     //convertView used to recycle views that move out of scrollspace
 
                     @Override
-                    public View getView(int position, View convertView, ViewGroup parent)
-                    {
+                    public View getView(int position, View convertView, ViewGroup parent) {
                         RouteList currentRouteTuple = rAllItems.get(position);
-                        if(convertView == null)
-                        {
+                        if (convertView == null) {
                             convertView = getLayoutInflater().inflate(R.layout.custom_item, null, false);
                             //ViewHolder used to contain TextViews in tuples
                             ViewHolder viewHolder = new ViewHolder();
                             //inflate once and store
-                            viewHolder.routeName = (TextView)convertView.findViewById(R.id.route_name);
-                            viewHolder.routeDescription = (TextView)convertView.findViewById(R.id.route_description);
+                            viewHolder.routeName = (TextView) convertView.findViewById(R.id.route_name);
+                            viewHolder.routeDescription = (TextView) convertView.findViewById(R.id.route_description);
                             convertView.setTag(viewHolder);
                             //Reference description as it's larger, easier to click
                             //Setup onClickListener, easily retrieve current position/item clicked
@@ -128,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
                                 public void onClick(View v) {
                                     //Setup implicit intent using Google Maps search query
                                     //Clicking on retrieved view opens it automatically, with station name as search
-                                    Uri mapsIntentUri = Uri.parse("geo:0,0?q="+currentRouteTuple.allRoutes);
+                                    Uri mapsIntentUri = Uri.parse("geo:0,0?q=" + currentRouteTuple.allRoutes);
                                     Intent mapIntent = new Intent(Intent.ACTION_VIEW, mapsIntentUri);
                                     mapIntent.setPackage("com.google.android.apps.maps");
                                     //Send implicit intent
@@ -140,14 +138,12 @@ public class MainActivity extends AppCompatActivity {
                         }
 
 
-
                         //Ref ViewHolder when required to update TextView, reduce resource usage
-                        TextView routeText = ((ViewHolder)convertView.getTag()).routeName;
-                        TextView listOfRoutes = ((ViewHolder)convertView.getTag()).routeDescription;
+                        TextView routeText = ((ViewHolder) convertView.getTag()).routeName;
+                        TextView listOfRoutes = ((ViewHolder) convertView.getTag()).routeDescription;
 
                         routeText.setText(currentRouteTuple.allRoutes);
                         listOfRoutes.setText(currentRouteTuple.allBuses);
-
 
 
                         return convertView;
@@ -167,12 +163,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Create RouteList objects and parse text received from GET() call
-    public void appendRoutes(StringBuilder b, ArrayList<Routes> addRoute, String currentRoute)
-    {
+    public void appendRoutes(StringBuilder b, ArrayList<Routes> addRoute, String currentRoute) {
         //Iterate through RouteList items contained in each ith Stations array entry
         b.delete(0, b.length());
-        for (int i = 0; i < addRoute.size(); i++)
-        {
+        for (int i = 0; i < addRoute.size(); i++) {
             b.append("Route number " + i + " : " + addRoute.get(i).getRoutename() + "\n");
         }
         String temp = currentRoute + "\n\n" + b.toString() + "\n";
