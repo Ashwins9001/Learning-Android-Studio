@@ -46,10 +46,10 @@ public class MainActivity extends AppCompatActivity {
     StringBuilder builder = new StringBuilder();
     List<String> forRecyclerView = new ArrayList<>();
 
-   // List<RouteList> rAllItems = new ArrayList<>();
+    List<RouteList> rAllItems = new ArrayList<>();
 
 
-/*    static class RouteList{
+    static class RouteList{
         String allRoutes;
        // ArrayList<String> allBuses;
         String allBuses;
@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
         TextView routeName;
         TextView routeDescription;
     }
-*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +104,31 @@ public class MainActivity extends AppCompatActivity {
                     routeData = new ArrayList<>(Arrays.asList(temp[i].getRoutes()));
                     appendRoutes(builder, routeData, data.get(i).getName());
                 }
-                ArrayAdapter<String> routeAdapter = new ArrayAdapter<>(MainActivity.this, R.layout.item, R.id.routes, forRecyclerView);
+                ArrayAdapter<RouteList> routeAdapter = new ArrayAdapter<RouteList>(MainActivity.this, 0, rAllItems)
+                {
+                    @Override
+                    public View getView(int position, View convertView, ViewGroup parent)
+                    {
+                        RouteList currentRouteTuple = rAllItems.get(position);
+                        if(convertView == null)
+                        {
+                            convertView = getLayoutInflater().inflate(R.layout.custom_item, null, false);
+                            ViewHolder viewHolder = new ViewHolder();
+                            //inflate once and store
+                            viewHolder.routeName = (TextView)convertView.findViewById(R.id.route_name);
+                            viewHolder.routeDescription = (TextView)convertView.findViewById(R.id.route_description);
+                            convertView.setTag(viewHolder);
+                        }
+                        //Ref ViewHolder when required to update TextView, reduce resource usage
+                        TextView routeText = ((ViewHolder)convertView.getTag()).routeName;
+                        TextView listOfRoutes = ((ViewHolder)convertView.getTag()).routeDescription;
+
+                        routeText.setText(currentRouteTuple.allRoutes);
+                        listOfRoutes.setText(currentRouteTuple.allBuses);
+                        return convertView;
+                    }
+                };
+
                 routeGrid.setAdapter(routeAdapter);
 
                 Log.w("Output", builder.toString());
@@ -125,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
         }
         String temp = currentRoute + "\n\n" + b.toString() + "\n";
         forRecyclerView.add(temp);
+        rAllItems.add(new RouteList(currentRoute, temp));
         Log.w("Strings", temp);
     }
 }
