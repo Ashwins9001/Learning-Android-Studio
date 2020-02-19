@@ -2,47 +2,37 @@ package com.example.retrofittest;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import okhttp3.Route;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static android.widget.Toast.LENGTH_SHORT;
-
 public class MainActivity extends AppCompatActivity {
 
     //Define StringBuilder to parse JSON data, and two separate arraylists to iterate through
     //Station and Route entries
     private TextView textViewResult;
-    private ArrayList<Books> data;
+    private ArrayList<Stations> data;
     private ArrayList<Routes> routeData;
     StringBuilder builder = new StringBuilder();
-
     List<RouteList> rAllItems = new ArrayList<>();
 
 
@@ -101,8 +91,8 @@ public class MainActivity extends AppCompatActivity {
                 JSONResponse jsonData = response.body();
 
                 //Store all stations as an array
-                data = new ArrayList<>(Arrays.asList(jsonData.getBooks()));
-                Books[] temp = jsonData.getBooks();
+                data = new ArrayList<>(Arrays.asList(jsonData.getStations()));
+                Stations[] temp = jsonData.getStations();
 
                 //Each station contains an array of Routes objects, require a nested for loop
                 for(int i = 0; i < data.size(); i++)
