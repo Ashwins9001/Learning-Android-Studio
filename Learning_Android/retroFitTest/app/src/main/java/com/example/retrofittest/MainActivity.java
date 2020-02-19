@@ -3,6 +3,8 @@ package com.example.retrofittest;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -114,6 +116,8 @@ public class MainActivity extends AppCompatActivity {
                 ArrayAdapter<RouteList> routeAdapter = new ArrayAdapter<RouteList>(MainActivity.this, 0, rAllItems)
                 {
                     //Redefeine getView to be account for RouteList objects
+                    //convertView used to recycle views that move out of scrollspace
+
                     @Override
                     public View getView(int position, View convertView, ViewGroup parent)
                     {
@@ -121,16 +125,20 @@ public class MainActivity extends AppCompatActivity {
                         if(convertView == null)
                         {
                             convertView = getLayoutInflater().inflate(R.layout.custom_item, null, false);
+                            //ViewHolder used to contain TextViews in tuples
                             ViewHolder viewHolder = new ViewHolder();
                             //inflate once and store
                             viewHolder.routeName = (TextView)convertView.findViewById(R.id.route_name);
                             viewHolder.routeDescription = (TextView)convertView.findViewById(R.id.route_description);
                             convertView.setTag(viewHolder);
-
+                            //Reference description as it's larger, easier to click
                             viewHolder.routeDescription.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    Toast.makeText(getContext(), "Position is " + position, Toast.LENGTH_SHORT).show();
+                                    Uri mapsIntentUri = Uri.parse("geo:0,0?q="+currentRouteTuple.allRoutes);
+                                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, mapsIntentUri);
+                                    mapIntent.setPackage("com.google.android.apps.maps");
+                                    startActivity(mapIntent);
                                     Log.w("toast", "clicked on " + position);
 
                                 }
