@@ -132,12 +132,16 @@ public class MainActivity extends AppCompatActivity {
                             viewHolder.routeDescription = (TextView)convertView.findViewById(R.id.route_description);
                             convertView.setTag(viewHolder);
                             //Reference description as it's larger, easier to click
+                            //Setup onClickListener, easily retrieve current position/item clicked
                             viewHolder.routeDescription.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
+                                    //Setup implicit intent using Google Maps search query
+                                    //Clicking on retrieved view opens it automatically, with station name as search
                                     Uri mapsIntentUri = Uri.parse("geo:0,0?q="+currentRouteTuple.allRoutes);
                                     Intent mapIntent = new Intent(Intent.ACTION_VIEW, mapsIntentUri);
                                     mapIntent.setPackage("com.google.android.apps.maps");
+                                    //Send implicit intent
                                     startActivity(mapIntent);
                                     Log.w("toast", "clicked on " + position);
 
