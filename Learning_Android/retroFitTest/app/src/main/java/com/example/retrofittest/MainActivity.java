@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -28,6 +30,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static android.widget.Toast.LENGTH_SHORT;
+
 public class MainActivity extends AppCompatActivity {
 
     //Define StringBuilder to parse JSON data, and two separate arraylists to iterate through
@@ -38,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     StringBuilder builder = new StringBuilder();
 
     List<RouteList> rAllItems = new ArrayList<>();
+
 
     //Combine data entries for station and bus routes
     static class RouteList{
@@ -121,7 +126,18 @@ public class MainActivity extends AppCompatActivity {
                             viewHolder.routeName = (TextView)convertView.findViewById(R.id.route_name);
                             viewHolder.routeDescription = (TextView)convertView.findViewById(R.id.route_description);
                             convertView.setTag(viewHolder);
+
+                            viewHolder.routeDescription.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Toast.makeText(getContext(), "Position is " + position, Toast.LENGTH_SHORT).show();
+                                    Log.w("toast", "clicked on " + position);
+
+                                }
+                            });
                         }
+
+
 
                         //Ref ViewHolder when required to update TextView, reduce resource usage
                         TextView routeText = ((ViewHolder)convertView.getTag()).routeName;
@@ -129,6 +145,9 @@ public class MainActivity extends AppCompatActivity {
 
                         routeText.setText(currentRouteTuple.allRoutes);
                         listOfRoutes.setText(currentRouteTuple.allBuses);
+
+
+
                         return convertView;
                     }
                 };
@@ -142,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
                 textViewResult.setText(t.getMessage());
             }
         });
-        //progressDialog.setVisibility(View.GONE);
+
     }
 
     //Create RouteList objects and parse text received from GET() call
@@ -158,4 +177,5 @@ public class MainActivity extends AppCompatActivity {
         rAllItems.add(new RouteList(currentRoute, temp));
         Log.w("Strings", temp);
     }
+
 }
