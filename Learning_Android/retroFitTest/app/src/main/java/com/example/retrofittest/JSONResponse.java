@@ -1,9 +1,8 @@
 package com.example.retrofittest;
 
+//Class used to define JSON response container
 public class JSONResponse {
     private Books[] stops;
-    //private Books[][] routes;
-    //public Books[][] getRoutes() { return routes; }
     public Books[] getBooks()
     {
         return stops;

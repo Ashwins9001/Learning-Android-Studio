@@ -26,32 +26,20 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-//Used to create (string,string) pairs for recyclerView
-/*
-class StationRoutes{
-    String station;
-    String route;
-
-    public StationRoutes(String station, String route)
-    {
-        this.station = station;
-        this.route = route;
-    }
-}*/
-
 public class MainActivity extends AppCompatActivity {
+
+    //Define StringBuilder to parse JSON data, and two separate arraylists to iterate through
+    //Station and Route entries
     private TextView textViewResult;
     private ArrayList<Books> data;
     private ArrayList<Routes> routeData;
     StringBuilder builder = new StringBuilder();
-    List<String> forRecyclerView = new ArrayList<>();
 
     List<RouteList> rAllItems = new ArrayList<>();
 
-
+    //Combine data entries for station and bus routes
     static class RouteList{
         String allRoutes;
-       // ArrayList<String> allBuses;
         String allBuses;
         public RouteList(String allRoutes, String allBuses)
         {
@@ -59,8 +47,8 @@ public class MainActivity extends AppCompatActivity {
             this.allRoutes = allRoutes;
         }
     }
-    int count = 0;
 
+    //Store views so findViewById() isn't repetitively called
     static class ViewHolder{
         TextView routeName;
         TextView routeDescription;
@@ -70,42 +58,54 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //SetUp GridView and set it to fill screen
         GridView routeGrid = new GridView(this);
         setContentView(routeGrid);
-
         routeGrid.setNumColumns(2);
-
         routeGrid.setColumnWidth(60);
         routeGrid.setVerticalSpacing(20);
         routeGrid.setHorizontalSpacing(20);
 
+        //Configure GSON settings to convert JSON strings to Java objects
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();
 
+        //Configure Retrofit, references JSONResponse class
+        //No need for explicit definitions, variables names set up to match those in data
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://myttc.ca/")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         Api api = retrofit.create(Api.class);
 
+        //Retrofit references API for GET() to specific URL
         Call<JSONResponse> call1 = api.getFinch();
 
+        //Add call information to queue and wait for async response from server
+        //Upon it, populate View using JSON data via ArrayAdapter
         call1.enqueue(new Callback<JSONResponse>() {
             @Override
             public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
                 if (!response.isSuccessful()) {return;}
                 JSONResponse jsonData = response.body();
+
+                //Store all stations as an array
                 data = new ArrayList<>(Arrays.asList(jsonData.getBooks()));
                 Books[] temp = jsonData.getBooks();
+
+                //Each station contains an array of Routes objects, require a nested for loop
                 for(int i = 0; i < data.size(); i++)
                 {
                     builder.append(data.get(i).getName() + "\n");
                     routeData = new ArrayList<>(Arrays.asList(temp[i].getRoutes()));
                     appendRoutes(builder, routeData, data.get(i).getName());
                 }
+
+                //Define ArrayAdapter to convert response objects to views
                 ArrayAdapter<RouteList> routeAdapter = new ArrayAdapter<RouteList>(MainActivity.this, 0, rAllItems)
                 {
+                    //Redefeine getView to be account for RouteList objects
                     @Override
                     public View getView(int position, View convertView, ViewGroup parent)
                     {
@@ -119,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
                             viewHolder.routeDescription = (TextView)convertView.findViewById(R.id.route_description);
                             convertView.setTag(viewHolder);
                         }
+
                         //Ref ViewHolder when required to update TextView, reduce resource usage
                         TextView routeText = ((ViewHolder)convertView.getTag()).routeName;
                         TextView listOfRoutes = ((ViewHolder)convertView.getTag()).routeDescription;
@@ -128,9 +129,7 @@ public class MainActivity extends AppCompatActivity {
                         return convertView;
                     }
                 };
-
                 routeGrid.setAdapter(routeAdapter);
-
                 Log.w("Output", builder.toString());
             }
             @Override
@@ -139,15 +138,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    //Create RouteList objects and parse text received from GET() call
     public void appendRoutes(StringBuilder b, ArrayList<Routes> addRoute, String currentRoute)
     {
+        //Iterate through RouteList items contained in each ith Stations array entry
         b.delete(0, b.length());
         for (int i = 0; i < addRoute.size(); i++)
         {
             b.append("Route number " + i + " : " + addRoute.get(i).getRoutename() + "\n");
         }
         String temp = currentRoute + "\n\n" + b.toString() + "\n";
-        forRecyclerView.add(temp);
         rAllItems.add(new RouteList(currentRoute, temp));
         Log.w("Strings", temp);
     }
