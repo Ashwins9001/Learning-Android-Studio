@@ -2,12 +2,14 @@ package com.example.retrofittest;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -60,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         //SetUp GridView and set it to fill screen
         GridView routeGrid = new GridView(this);
-        setContentView(routeGrid);
+        setContentView(R.layout.activity_main);
         routeGrid.setNumColumns(2);
         routeGrid.setColumnWidth(60);
         routeGrid.setVerticalSpacing(20);
@@ -81,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Retrofit references API for GET() to specific URL
         Call<JSONResponse> call1 = api.getFinch();
+
 
         //Add call information to queue and wait for async response from server
         //Upon it, populate View using JSON data via ArrayAdapter
@@ -129,14 +132,17 @@ public class MainActivity extends AppCompatActivity {
                         return convertView;
                     }
                 };
+                setContentView(routeGrid);
                 routeGrid.setAdapter(routeAdapter);
                 Log.w("Output", builder.toString());
             }
+
             @Override
             public void onFailure(Call<JSONResponse> call, Throwable t) {
                 textViewResult.setText(t.getMessage());
             }
         });
+        //progressDialog.setVisibility(View.GONE);
     }
 
     //Create RouteList objects and parse text received from GET() call
