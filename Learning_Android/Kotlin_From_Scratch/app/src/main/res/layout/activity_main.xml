@@ -16,6 +16,7 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
         <!-- Bound text to viewmodel, whenever currentRandomFruitName changes, so does text of textview -->
+        <!-- one-way data binding on textView -->
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
@@ -45,6 +46,8 @@
             app:layout_constraintTop_toBottomOf="@+id/textView"
             app:layout_constraintVertical_bias="0.0" />
 
+        <!-- Call lambda func, two way data binding on editText, operating on properties inside viewmodel -->
+        <!-- properties presented as livedata -->
         <EditText
             android:id="@+id/editText"
             android:layout_width="0dp"
