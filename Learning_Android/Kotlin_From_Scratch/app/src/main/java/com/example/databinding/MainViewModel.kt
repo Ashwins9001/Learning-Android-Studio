@@ -28,6 +28,10 @@ class MainViewModel : ViewModel(){
     fun onDisplayEditTextContentClick() {
         _displayedEditTextContent.value = editTextContent.value //on click listener, derive vals & change given LiveData, set textView to editText in XML
     }
+
+    fun onSelectRandomEditTextFruit() {
+        editTextContent.value = FakeRepository.getRandomFruitName()
+    }
 }
 
 //App architecture way of designing app classes and relationships b/w them, follow MVVM here
